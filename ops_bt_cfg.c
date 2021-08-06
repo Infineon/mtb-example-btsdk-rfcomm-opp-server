@@ -77,20 +77,20 @@ wiced_bt_cfg_settings_t opp_server_cfg_settings =
         /* Advertisement scan configuration */
         .high_duty_scan_interval         = 96,                                                         /**< High duty scan interval */
         .high_duty_scan_window           = 48,                                                         /**< High duty scan window */
-        .high_duty_scan_duration         = 30,                                                         /**< High duty scan duration in seconds */
+        .high_duty_scan_duration         = 30,                                                         /**< High duty scan duration in seconds (0 for infinite) */
 
         .low_duty_scan_interval          = 192,                                                        /**< Low duty scan interval  */
         .low_duty_scan_window            = 36,                                                         /**< Low duty scan window */
-        .low_duty_scan_duration          = 30,                                                         /**< Low duty scan duration in seconds */
+        .low_duty_scan_duration          = 30,                                                         /**< Low duty scan duration in seconds (0 for infinite) */
 
         /* Connection scan configuration */
         .high_duty_conn_scan_interval    = 96,                                                         /**< High duty cycle connection scan interval */
         .high_duty_conn_scan_window      = 48,                                                         /**< High duty cycle connection scan window */
-        .high_duty_conn_duration         = 30,                                                         /**< High duty cycle connection duration in seconds */
+        .high_duty_conn_duration         = 30,                                                         /**< High duty cycle connection duration in seconds (0 for infinite) */
 
         .low_duty_conn_scan_interval     = 192,                                                        /**< Low duty cycle connection scan interval */
         .low_duty_conn_scan_window       = 36,                                                         /**< Low duty cycle connection scan window */
-        .low_duty_conn_duration          = 30,                                                         /**< Low duty cycle connection duration in seconds */
+        .low_duty_conn_duration          = 30,                                                         /**< Low duty cycle connection duration in seconds (0 for infinite) */
 
         /* Connection configuration */
         .conn_min_interval               = WICED_BT_CFG_DEFAULT_CONN_MIN_INTERVAL,                     /**< Minimum connection interval */
@@ -107,25 +107,25 @@ wiced_bt_cfg_settings_t opp_server_cfg_settings =
 
         .high_duty_min_interval          = WICED_BT_CFG_DEFAULT_HIGH_DUTY_ADV_MIN_INTERVAL,            /**< High duty undirected connectable minimum advertising interval */
         .high_duty_max_interval          = WICED_BT_CFG_DEFAULT_HIGH_DUTY_ADV_MAX_INTERVAL,            /**< High duty undirected connectable maximum advertising interval */
-        .high_duty_duration              = 30,                                                         /**< High duty undirected connectable advertising duration in seconds */
+        .high_duty_duration              = 30,                                                         /**< High duty undirected connectable advertising duration in seconds (0 for infinite) */
 
         .low_duty_min_interval           = WICED_BT_CFG_DEFAULT_LOW_DUTY_ADV_MIN_INTERVAL,             /**< Low duty undirected connectable minimum advertising interval */
         .low_duty_max_interval           = WICED_BT_CFG_DEFAULT_LOW_DUTY_ADV_MAX_INTERVAL,             /**< Low duty undirected connectable maximum advertising interval */
-        .low_duty_duration               = 60,                                                         /**< Low duty undirected connectable advertising duration in seconds */
+        .low_duty_duration               = 60,                                                         /**< Low duty undirected connectable advertising duration in seconds (0 for infinite) */
         .high_duty_directed_min_interval = WICED_BT_CFG_DEFAULT_HIGH_DUTY_DIRECTED_ADV_MIN_INTERVAL,   /**< High duty directed connectable minimum advertising interval */
         .high_duty_directed_max_interval = WICED_BT_CFG_DEFAULT_HIGH_DUTY_DIRECTED_ADV_MAX_INTERVAL,   /**< High duty directed connectable maximum advertising interval */
 
         .low_duty_directed_min_interval  = WICED_BT_CFG_DEFAULT_LOW_DUTY_DIRECTED_ADV_MIN_INTERVAL,    /**< Low duty directed connectable minimum advertising interval */
         .low_duty_directed_max_interval  = WICED_BT_CFG_DEFAULT_LOW_DUTY_DIRECTED_ADV_MAX_INTERVAL,    /**< Low duty directed connectable maximum advertising interval */
-        .low_duty_directed_duration      = 30,                                                         /**< Low duty directed connectable advertising duration in seconds */
+        .low_duty_directed_duration      = 30,                                                         /**< Low duty directed connectable advertising duration in seconds (0 for infinite) */
 
         .high_duty_nonconn_min_interval  = WICED_BT_CFG_DEFAULT_HIGH_DUTY_NONCONN_ADV_MIN_INTERVAL,    /**< High duty non-connectable minimum advertising interval */
         .high_duty_nonconn_max_interval  = WICED_BT_CFG_DEFAULT_HIGH_DUTY_NONCONN_ADV_MAX_INTERVAL,    /**< High duty non-connectable maximum advertising interval */
-        .high_duty_nonconn_duration      = 30,                                                         /**< High duty non-connectable advertising duration in seconds */
+        .high_duty_nonconn_duration      = 30,                                                         /**< High duty non-connectable advertising duration in seconds (0 for infinite) */
 
         .low_duty_nonconn_min_interval   = WICED_BT_CFG_DEFAULT_LOW_DUTY_NONCONN_ADV_MIN_INTERVAL,     /**< Low duty non-connectable minimum advertising interval */
         .low_duty_nonconn_max_interval   = WICED_BT_CFG_DEFAULT_LOW_DUTY_NONCONN_ADV_MAX_INTERVAL,     /**< Low duty non-connectable maximum advertising interval */
-        .low_duty_nonconn_duration       = 0                                                           /**< Low duty non-connectable advertising duration in seconds */
+        .low_duty_nonconn_duration       = 0                                                           /**< Low duty non-connectable advertising duration in seconds (0 for infinite) */
     },
 
     .gatt_cfg =                                                     /* GATT configuration */
@@ -197,7 +197,7 @@ wiced_bt_cfg_settings_t opp_server_cfg_settings =
     .default_ble_power_level            = 0                                                            /**< Default LE power level, Refer lm_TxPwrTable table for the power range */
 #endif
 };
-
+#define WICED_BT_OPP_L2CAP_PSM 0x1003
 
 /*****************************************************************************
  * SDP database for the opp_server application
@@ -215,7 +215,9 @@ const uint8_t opp_server_sdp_db[] = // Define SDP database
         SDP_ATTR_RFCOMM_PROTOCOL_DESC_LIST(OPP_SERVER_SCN),                  // 17 bytes
         SDP_ATTR_BROWSE_LIST,                                                // 8 bytes
         SDP_ATTR_PROFILE_DESC_LIST(UUID_SERVCLASS_OBEX_OBJECT_PUSH, 0x0102), // 13 bytes
-        SDP_ATTR_SERVICE_NAME(10),                                           // 15
+	    SDP_ATTR_ID(ATTR_ID_OBX_OVR_L2CAP_PSM),     // 10 byte
+	                SDP_ATTR_VALUE_UINT2(WICED_BT_OPS_L2CAP_PSM),
+		SDP_ATTR_SERVICE_NAME(10),                                           // 15
             'O', 'P', 'P', ' ', 'S', 'E', 'R', 'V', 'E', 'R',
         SDP_ATTR_ID(ATTR_ID_SUPPORTED_FORMATS_LIST),                         // 3 bytes
         SDP_ATTR_SEQUENCE_1(14),                                             // 2 bytes
@@ -241,7 +243,7 @@ const wiced_bt_cfg_buf_pool_t opp_server_cfg_buf_pools[] =
 /*  { buf_size, buf_count } */
     { 64,      12  },      /* Small Buffer Pool */
     { 272,      6  },      /* Medium Buffer Pool (used for HCI & RFCOMM control messages, min recommended size is 360) */
-    { 1056,     6  },      /* Large Buffer Pool  (used for HCI ACL messages) */
+    { 1056,     12  },      /* Large Buffer Pool  (used for HCI ACL messages) */
     { 1056,     1  },      /* Extra Large Buffer Pool - Used for avdt media packets and miscellaneous (if not needed, set buf_count to 0) */
 };
 

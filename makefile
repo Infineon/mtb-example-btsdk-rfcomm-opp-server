@@ -88,6 +88,7 @@ CY_APP_DEFINES+=\
   -DWICED_BT_TRACE_ENABLE \
   -DOBEX_LIB_SESSION_SUPPORTED
 
+
 #
 # Components (middleware libraries)
 #
