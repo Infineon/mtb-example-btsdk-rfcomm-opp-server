@@ -163,7 +163,7 @@ void opp_server_write_eir()
     *p++ = 0;
 
     // print EIR data
-    wiced_bt_trace_array("EIR :", (uint8_t*) (pBuf + 1), MIN(p - (uint8_t* )pBuf, 100));
+    WICED_BT_TRACE_ARRAY((uint8_t*) (pBuf + 1), MIN(p - (uint8_t* )pBuf, 100), "EIR :");
     wiced_bt_dev_write_eir(pBuf, (uint16_t) (p - pBuf));
 
     return;

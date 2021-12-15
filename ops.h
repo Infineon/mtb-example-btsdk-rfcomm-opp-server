@@ -47,7 +47,6 @@ extern wiced_bt_cfg_settings_t opp_server_cfg_settings;
 extern const wiced_bt_cfg_buf_pool_t opp_server_cfg_buf_pools[];
 
 extern uint32_t  hci_control_proc_rx_cmd( uint8_t *p_data, uint32_t length );
-extern void      wiced_bt_trace_array( const char *string, const uint8_t* array, const uint16_t len );
 extern void      GKI_freebuf (void *memPtr);
 extern uint16_t  wiced_app_cfg_sdp_record_get_size(void);
 extern int       hci_control_find_nvram_id(uint8_t *p_data, int len);
