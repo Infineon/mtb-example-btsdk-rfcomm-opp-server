@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2021, Cypress Semiconductor Corporation (an Infineon company) or
+ * Copyright 2016-2022, Cypress Semiconductor Corporation (an Infineon company) or
  * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
  *
  * This software, including source code, documentation and related
@@ -215,8 +215,10 @@ const uint8_t opp_server_sdp_db[] = // Define SDP database
         SDP_ATTR_RFCOMM_PROTOCOL_DESC_LIST(OPP_SERVER_SCN),                  // 17 bytes
         SDP_ATTR_BROWSE_LIST,                                                // 8 bytes
         SDP_ATTR_PROFILE_DESC_LIST(UUID_SERVCLASS_OBEX_OBJECT_PUSH, 0x0102), // 13 bytes
+#if !defined(CYW20706A2)
 	    SDP_ATTR_ID(ATTR_ID_OBX_OVR_L2CAP_PSM),     // 10 byte
 	                SDP_ATTR_VALUE_UINT2(WICED_BT_OPS_L2CAP_PSM),
+#endif
 		SDP_ATTR_SERVICE_NAME(10),                                           // 15
             'O', 'P', 'P', ' ', 'S', 'E', 'R', 'V', 'E', 'R',
         SDP_ATTR_ID(ATTR_ID_SUPPORTED_FORMATS_LIST),                         // 3 bytes
